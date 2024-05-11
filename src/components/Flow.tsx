@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import ReactFlow, {
   addEdge,
   Node,
@@ -12,7 +12,10 @@ import ReactFlow, {
   OnConnect,
 } from 'reactflow'
 
+import TextUpdaterNode from '../components/nodes/TextUpdaterNode'
+
 import 'reactflow/dist/style.css'
+
 
 export default function App({
   nodes: initNodes,
@@ -23,6 +26,8 @@ export default function App({
 }) {
   const [nodes, setNodes] = useState<Node[]>(initNodes)
   const [edges, setEdges] = useState<Edge[]>(initEdges)
+
+  const nodeTypes = useMemo(() => ({ textUpdater: TextUpdaterNode }), []);
 
   const onNodesChange: OnNodesChange = useCallback(
     (chs) => {
@@ -51,6 +56,7 @@ export default function App({
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={nodeTypes}
       />
     </div>
   )

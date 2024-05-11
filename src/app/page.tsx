@@ -14,7 +14,7 @@ const nodeSize = {
 const initialNodes: Node[] = [
   {
     id: '1',
-    type: 'input',
+    type: 'textUpdater',
     data: { label: 'Node 1' },
     position: { x: 250, y: 5 },
     width: nodeSize.width,
