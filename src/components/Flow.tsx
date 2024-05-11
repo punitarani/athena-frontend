@@ -3,19 +3,19 @@
 import { useCallback, useMemo, useState } from 'react'
 import ReactFlow, {
   addEdge,
-  Node,
-  Edge,
-  applyNodeChanges,
   applyEdgeChanges,
-  OnNodesChange,
-  OnEdgesChange,
+  applyNodeChanges,
+  Edge,
+  Node,
   OnConnect,
+  OnEdgesChange,
+  OnNodesChange,
 } from 'reactflow'
 
 import TextUpdaterNode from '../components/nodes/TextUpdaterNode'
 
 import 'reactflow/dist/style.css'
-
+import './nodes/nodes-styles.css'
 
 export default function App({
   nodes: initNodes,
@@ -27,7 +27,7 @@ export default function App({
   const [nodes, setNodes] = useState<Node[]>(initNodes)
   const [edges, setEdges] = useState<Edge[]>(initEdges)
 
-  const nodeTypes = useMemo(() => ({ textUpdater: TextUpdaterNode }), []);
+  const nodeTypes = useMemo(() => ({ textUpdater: TextUpdaterNode }), [])
 
   const onNodesChange: OnNodesChange = useCallback(
     (chs) => {

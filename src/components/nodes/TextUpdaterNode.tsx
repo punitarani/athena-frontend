@@ -1,35 +1,45 @@
-import { useCallback, ChangeEvent, FC } from 'react';
-import { Handle, Position } from 'reactflow';
+import { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react'
 
 interface TextUpdaterNodeProps {
-    data: { label: string };
-    isConnectable: boolean;
+  data: { label: string }
+  isConnectable: boolean
 }
-
-const handleStyle = { left: 10 };
 
 const TextUpdaterNode: FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => {
-    const onChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        console.log(evt.target.value);
-    }, []);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
-    return (
-        <div className="text-updater-node">
-            <Handle type="target" position={Position.Top} isConnectable={isConnectable} />
-            <div>
-                <label htmlFor="text">Text:</label>
-                <input id="text" name="text" onChange={onChange} className="nodrag" />
-            </div>
-            <Handle
-                type="source"
-                position={Position.Bottom}
-                id="a"
-                style={handleStyle}
-                isConnectable={isConnectable}
-            />
-            <Handle type="source" position={Position.Bottom} id="b" isConnectable={isConnectable} />
-        </div>
-    );
+  const onChange = useCallback((evt: ChangeEvent<HTMLTextAreaElement>) => {
+    console.log(evt.target.value)
+  }, [])
+
+  const onInput = useCallback(() => {
+    if (textAreaRef.current) {
+      textAreaRef.current.style.height = '20px' // Min height for reset
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`
+    }
+  }, [])
+
+  useEffect(() => {
+    if (textAreaRef.current) {
+      textAreaRef.current.style.height = '20px' // Set initial height to one line
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`
+    }
+  }, [])
+
+  return (
+    <div className="text-updater-node nodrag">
+      <div>
+        <textarea
+          ref={textAreaRef}
+          id="text"
+          name="text"
+          onChange={onChange}
+          onInput={onInput}
+          className="nodrag auto-expand"
+        />
+      </div>
+    </div>
+  )
 }
 
-export default TextUpdaterNode;
+export default TextUpdaterNode
